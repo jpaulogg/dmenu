@@ -370,10 +370,8 @@ keypress(XKeyEvent *ev)
 			while (cursor > 0 && !strchr(worddelimiters, text[nextrune(-1)]))
 				insert(NULL, nextrune(-1) - cursor);
 			break;
-		case XK_y: /* paste selection */
-		case XK_Y:
-			XConvertSelection(dpy, (ev->state & ShiftMask) ? clip : XA_PRIMARY,
-			                  utf8, utf8, win, CurrentTime);
+		case XK_v: /* paste selection */
+			XConvertSelection(dpy, XA_PRIMARY, utf8, utf8, win, CurrentTime);
 			return;
 		case XK_Left:
 		case XK_KP_Left:
@@ -407,6 +405,12 @@ keypress(XKeyEvent *ev)
 		case XK_k: ksym = XK_Prior; break;
 		case XK_l: ksym = XK_Down;  break;
 		default:
+			return;
+		}
+	} else if (ev->state & ShiftMask) {
+		switch(ksym) {
+		case XK_Insert:
+			XConvertSelection(dpy, clip, utf8, utf8, win, CurrentTime);
 			return;
 		}
 	}
