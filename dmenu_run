@@ -1,2 +1,20 @@
 #!/bin/sh
-dmenu_path | dmenu "$@" | ${SHELL:-"/bin/sh"} &
+
+list_apps()
+{
+	cat <<-EOF
+		firefox
+		firefox --safe-mode
+		firefox --private-window
+		brave-browser-stable
+		brave-browser-stable --incognito
+		libreoffice
+		libreoffice --writer
+		libreoffice --calc
+		Discord
+		telegram-desktop
+	EOF
+}
+
+list_apps | dmenu "$@" | /bin/sh &
+
