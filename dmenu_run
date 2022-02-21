@@ -1,20 +1,10 @@
 #!/bin/sh
 
-list_apps()
-{
-	cat <<-EOF
-		firefox
-		firefox --safe-mode
-		firefox --private-window
-		brave-browser-stable
-		brave-browser-stable --incognito
-		libreoffice
-		libreoffice --writer
-		libreoffice --calc
-		Discord
-		telegram-desktop
-	EOF
-}
+app_list="$XDG_DATA_HOME/x11-apps.list"
 
-list_apps | dmenu "$@" | /bin/sh &
-
+if [ -e "$app_list" ]; then
+	cat "$app_list"
+else
+	dmenu_path
+fi \
+	| dmenu -p "run:" "$@" | ${SHELL:-/bin/sh} &
